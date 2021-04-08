@@ -14,7 +14,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="99*"/>
+            <ColumnDefinition Width="674*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -25,17 +26,17 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <materialDesign:ColorZone Grid.ColumnSpan="3" Grid.RowSpan="2" Mode="PrimaryMid" >
-            <DockPanel >
-                <Button VerticalAlignment="Center" HorizontalAlignment="Left">
-                    <materialDesign:PackIcon Height="20" Width="20" Kind="FileCsv"/>
+        <materialDesign:ColorZone Grid.ColumnSpan="4" Grid.RowSpan="2" Mode="PrimaryMid" >
+            <DockPanel>
+                <Button VerticalAlignment="Center" HorizontalAlignment="Left" Command="{Binding ExportCSVFile}">
+                    <materialDesign:PackIcon  Kind="FileCsv"/>
                 </Button>
             </DockPanel>
         </materialDesign:ColorZone>
-        
-        <DataGrid Grid.Row="3" Grid.Column="1">
-            
+
+        <DataGrid Grid.Row="3" Grid.Column="1" ItemsSource="{Binding MainWindowDataGrid, IsAsync=True}" Grid.ColumnSpan="2">
+
         </DataGrid>
-        
+
     </Grid>
 </Window>
