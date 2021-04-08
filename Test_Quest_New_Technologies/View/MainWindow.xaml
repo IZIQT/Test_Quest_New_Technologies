@@ -1,0 +1,41 @@
+﻿<Window x:Class="Test_Quest_New_Technologies.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Test_Quest_New_Technologies"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ViewModel="clr-namespace:Test_Quest_New_Technologies.ViewModel"
+        mc:Ignorable="d"
+        Title="Задача на должность C# разработчика по направлению Аналитическая обработка информации" Height="450" Width="800">
+    <Window.DataContext>
+        <ViewModel:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone Grid.ColumnSpan="3" Grid.RowSpan="2" Mode="PrimaryMid" >
+            <DockPanel >
+                <Button VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Height="20" Width="20" Kind="FileCsv"/>
+                </Button>
+            </DockPanel>
+        </materialDesign:ColorZone>
+        
+        <DataGrid Grid.Row="3" Grid.Column="1">
+            
+        </DataGrid>
+        
+    </Grid>
+</Window>
