@@ -2,8 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +14,42 @@ namespace Test_Quest_New_Technologies.ViewModel
 {
     class MainViewModel:ViewModelBase
     {
+        private Visibility runExportCSVVisiblity;
+        public Visibility RunExportCSVVisiblity
+        {
+            get => runExportCSVVisiblity;
+            set
+            {
+                if (runExportCSVVisiblity == value) return;
+                runExportCSVVisiblity = value;
+                OnPropertyChanged(nameof(RunExportCSVVisiblity));
+            }
+        }
+
+        private int progressBarMax;
+        public int ProgressBarMax
+        {
+            get => progressBarMax;
+            set
+            {
+                if (progressBarMax == value) return;
+                progressBarMax = value;
+                OnPropertyChanged(nameof(ProgressBarMax));
+            }
+        }
+
+        private int progressBarValue;
+        public int ProgressBarValue
+        {
+            get => progressBarValue;
+            set
+            {
+                if (progressBarValue == value) return;
+                progressBarValue = value;
+                OnPropertyChanged(nameof(ProgressBarValue));
+            }
+        }
+
         private string selectedCSVFile;
         public string SelectedCSVFile
         {
@@ -39,10 +75,33 @@ namespace Test_Quest_New_Technologies.ViewModel
         }
 
         public ICommand ExportCSVFile { get; set; }
-
+        public ICommand ExitExportCSV { get; set; }
+        public ICommand ExitExportCSVTestExit { get; set; }
         public MainViewModel()
         {
+            RunExportCSVVisiblity = Visibility.Collapsed;
             ExportCSVFile = new RelayCommand(ExportCSVFileExecute);
+            ExitExportCSV = new RelayCommand(ExitExportCSVExecute);
+            ExitExportCSVTestExit = new RelayCommand(ExitExportCSVTestExitExecute);
+        }
+
+        private async void ExitExportCSVTestExitExecute(object obj)
+        {
+            MainWindowDataGrid = new ObservableCollection<MainWindowDataGridModel>();
+            cts = new CancellationTokenSource();
+            token = cts.Token;
+            await Task.Run(() =>
+            {
+                MainWindowDataGrid = TestExitExcute(token);
+            });
+            
+        }
+
+        static CancellationTokenSource cts = new CancellationTokenSource();
+        CancellationToken token = cts.Token;
+        private void ExitExportCSVExecute(object obj)
+        {
+            cts.Cancel();
         }
 
         private async void ExportCSVFileExecute(object obj)
@@ -53,61 +112,12 @@ namespace Test_Quest_New_Technologies.ViewModel
             {
                 try
                 {
-                    //using (StreamReader sr = new StreamReader(openFileDialog.FileName, Encoding.Default))
-                    //{
-                        MainWindowDataGrid = new ObservableCollection<MainWindowDataGridModel>();
-
-                    //await Task.Run(() =>
-                    //{
-                    //    for (int i = 0; i < 1000; i++)
-                    //    {
-                    //        MainWindowDataGrid.Add(
-                    //            new MainWindowDataGridModel()
-                    //            {
-                    //                Loc_Date = DateTime.Parse("02,02,2020"),
-                    //                Object_A = "02,02,2020",
-                    //                Type_A = "02,02,2020",
-                    //                Object_B = "02,02,2020",
-                    //                Type_B = "02,02,2020",
-                    //                Direction = "02,02,2020",
-                    //                Color = "02,02,2020",
-                    //                Intensity = "02,02,2020",
-                    //                LatitudeA = 60,
-                    //                LongitudeA = 60,
-                    //                LatitudeB = 60,
-                    //                LongitudeB = 60
-                    //            });
-                    //    }
-                    //});
-                    //string getLine;
-                    //while ((getLine = sr.ReadLine()) != null)
-                    //{
-                    //    string[] getSplitLine = getLine.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    //    DateTime tryToDate;
-                    //    if (getSplitLine.Length == 12 && DateTime.TryParse(getSplitLine[0], out tryToDate))
-                    //    {
-                    //        MainWindowDataGrid.Add(
-                    //            new MainWindowDataGridModel()
-                    //            {
-                    //                Loc_Date = DateTime.Parse(getSplitLine[0]),
-                    //                Object_A = getSplitLine[1],
-                    //                Type_A = getSplitLine[2],
-                    //                Object_B = getSplitLine[3],
-                    //                Type_B = getSplitLine[4],
-                    //                Direction = getSplitLine[5],
-                    //                Color = getSplitLine[6],
-                    //                Intensity = getSplitLine[7],
-                    //                LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
-                    //                LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
-                    //                LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
-                    //                LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
-                    //            });
-                    //    }
-                    //}
-
+                    MainWindowDataGrid = new ObservableCollection<MainWindowDataGridModel>();
+                    cts = new CancellationTokenSource();
+                    token = cts.Token;
                     await Task.Run(() =>
                     {
-                        MainWindowDataGrid = ReadFileExcute(openFileDialog.FileName);
+                        MainWindowDataGrid = ReadFileExcute(openFileDialog.FileName, token);
                     });
 
                 }
@@ -122,11 +132,14 @@ namespace Test_Quest_New_Technologies.ViewModel
             }
         }
 
-        private ObservableCollection<MainWindowDataGridModel> ReadFileExcute(string FileName)
+        private ObservableCollection<MainWindowDataGridModel> ReadFileExcute(string FileName, CancellationToken token)
         {
             using (StreamReader sr = new StreamReader(FileName, Encoding.Default))
             {
                 ObservableCollection<MainWindowDataGridModel> localOC = new ObservableCollection<MainWindowDataGridModel>();
+                ProgressBarMax = System.IO.File.ReadAllLines(FileName).Length -1;
+                ProgressBarValue = 0;
+                RunExportCSVVisiblity = Visibility.Visible;
                 string getLine;
                 while ((getLine = sr.ReadLine()) != null)
                 {
@@ -144,16 +157,58 @@ namespace Test_Quest_New_Technologies.ViewModel
                                 Type_B = getSplitLine[4],
                                 Direction = getSplitLine[5],
                                 Color = getSplitLine[6],
-                                Intensity = getSplitLine[7],
+                                Intensity = Convert.ToInt32(getSplitLine[7]),
                                 LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
                                 LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
                                 LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
                                 LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
                             });
+                        ProgressBarValue += 1;
+                        if (token.IsCancellationRequested)
+                        {
+                            RunExportCSVVisiblity = Visibility.Collapsed;
+                            return localOC;
+                        }
                     }
                 }
+                RunExportCSVVisiblity = Visibility.Collapsed;
                 return localOC;
             }
+        }
+
+        private ObservableCollection<MainWindowDataGridModel> TestExitExcute(CancellationToken token)
+        {
+            ObservableCollection<MainWindowDataGridModel> localOC = new ObservableCollection<MainWindowDataGridModel>();
+            ProgressBarMax = 9999999;
+            ProgressBarValue = 0;
+            RunExportCSVVisiblity = Visibility.Visible;
+            for (int i = 0; i < 9999999; i++)
+            {
+                localOC.Add(
+                new MainWindowDataGridModel()
+                {
+                    Loc_Date = DateTime.Parse("01,01,2020"),
+                    Object_A = "test",
+                    Type_A = "test",
+                    Object_B = "test",
+                    Type_B = "test",
+                    Direction = "test",
+                    Color = "test",
+                    Intensity = 4,
+                    LatitudeA = 60,
+                    LongitudeA = 60,
+                    LatitudeB = 60,
+                    LongitudeB = 60
+                });
+                ProgressBarValue += 1;
+                if (token.IsCancellationRequested)
+                {
+                    RunExportCSVVisiblity = Visibility.Collapsed;
+                    return localOC;
+                }
+            }
+            RunExportCSVVisiblity = Visibility.Collapsed;
+            return localOC;
         }
 
     }

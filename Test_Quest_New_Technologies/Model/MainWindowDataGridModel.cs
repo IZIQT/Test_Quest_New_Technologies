@@ -84,8 +84,8 @@ namespace Test_Quest_New_Technologies.Model
             }
         }
 
-        private string intensity;
-        public string Intensity
+        private int intensity;
+        public int Intensity
         {
             get => intensity;
             set
