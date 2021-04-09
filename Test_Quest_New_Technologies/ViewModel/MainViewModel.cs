@@ -57,90 +57,59 @@ namespace Test_Quest_New_Technologies.ViewModel
                     //{
                         MainWindowDataGrid = new ObservableCollection<MainWindowDataGridModel>();
 
-                        //await Task.Run(() =>
-                        //{
-                        //    for (int i = 0; i < 1000; i++)
-                        //    {
-                        //        MainWindowDataGrid.Add(
-                        //            new MainWindowDataGridModel()
-                        //            {
-                        //                Loc_Date = DateTime.Parse("02,02,2020"),
-                        //                Object_A = "02,02,2020",
-                        //                Type_A = "02,02,2020",
-                        //                Object_B = "02,02,2020",
-                        //                Type_B = "02,02,2020",
-                        //                Direction = "02,02,2020",
-                        //                Color = "02,02,2020",
-                        //                Intensity = "02,02,2020",
-                        //                LatitudeA = 60,
-                        //                LongitudeA = 60,
-                        //                LatitudeB = 60,
-                        //                LongitudeB = 60
-                        //            });
-                        //    }
-                        //});
-                        //string getLine;
-                        //while ((getLine = sr.ReadLine()) != null)
-                        //{
-                        //    string[] getSplitLine = getLine.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                        //    DateTime tryToDate;
-                        //    if (getSplitLine.Length == 12 && DateTime.TryParse(getSplitLine[0], out tryToDate))
-                        //    {
-                        //        MainWindowDataGrid.Add(
-                        //            new MainWindowDataGridModel()
-                        //            {
-                        //                Loc_Date = DateTime.Parse(getSplitLine[0]),
-                        //                Object_A = getSplitLine[1],
-                        //                Type_A = getSplitLine[2],
-                        //                Object_B = getSplitLine[3],
-                        //                Type_B = getSplitLine[4],
-                        //                Direction = getSplitLine[5],
-                        //                Color = getSplitLine[6],
-                        //                Intensity = getSplitLine[7],
-                        //                LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
-                        //                LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
-                        //                LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
-                        //                LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
-                        //            });
-                        //    }
-                        //}
-
-                        Task<ObservableCollection<MainWindowDataGridModel>> task1 = new Task<ObservableCollection<MainWindowDataGridModel>>(() =>
-                        {
-                            using (StreamReader sr = new StreamReader(openFileDialog.FileName, Encoding.Default))
-                            {
-                                ObservableCollection<MainWindowDataGridModel> localOC = new ObservableCollection<MainWindowDataGridModel>();
-                                string getLine;
-                                while ((getLine = sr.ReadLine()) != null)
-                                {
-                                    string[] getSplitLine = getLine.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                                    DateTime tryToDate;
-                                    if (getSplitLine.Length == 12 && DateTime.TryParse(getSplitLine[0], out tryToDate))
-                                    {
-                                        localOC.Add(
-                                            new MainWindowDataGridModel()
-                                            {
-                                                Loc_Date = DateTime.Parse(getSplitLine[0]),
-                                                Object_A = getSplitLine[1],
-                                                Type_A = getSplitLine[2],
-                                                Object_B = getSplitLine[3],
-                                                Type_B = getSplitLine[4],
-                                                Direction = getSplitLine[5],
-                                                Color = getSplitLine[6],
-                                                Intensity = getSplitLine[7],
-                                                LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
-                                                LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
-                                                LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
-                                                LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
-                                            });
-                                    }
-                                }
-                                return localOC;
-                            }
-                        });
-                    await Task.Run(() => { task1.Start(); }); 
-                    mainWindowDataGrid = task1.Result;
+                    //await Task.Run(() =>
+                    //{
+                    //    for (int i = 0; i < 1000; i++)
+                    //    {
+                    //        MainWindowDataGrid.Add(
+                    //            new MainWindowDataGridModel()
+                    //            {
+                    //                Loc_Date = DateTime.Parse("02,02,2020"),
+                    //                Object_A = "02,02,2020",
+                    //                Type_A = "02,02,2020",
+                    //                Object_B = "02,02,2020",
+                    //                Type_B = "02,02,2020",
+                    //                Direction = "02,02,2020",
+                    //                Color = "02,02,2020",
+                    //                Intensity = "02,02,2020",
+                    //                LatitudeA = 60,
+                    //                LongitudeA = 60,
+                    //                LatitudeB = 60,
+                    //                LongitudeB = 60
+                    //            });
+                    //    }
+                    //});
+                    //string getLine;
+                    //while ((getLine = sr.ReadLine()) != null)
+                    //{
+                    //    string[] getSplitLine = getLine.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    //    DateTime tryToDate;
+                    //    if (getSplitLine.Length == 12 && DateTime.TryParse(getSplitLine[0], out tryToDate))
+                    //    {
+                    //        MainWindowDataGrid.Add(
+                    //            new MainWindowDataGridModel()
+                    //            {
+                    //                Loc_Date = DateTime.Parse(getSplitLine[0]),
+                    //                Object_A = getSplitLine[1],
+                    //                Type_A = getSplitLine[2],
+                    //                Object_B = getSplitLine[3],
+                    //                Type_B = getSplitLine[4],
+                    //                Direction = getSplitLine[5],
+                    //                Color = getSplitLine[6],
+                    //                Intensity = getSplitLine[7],
+                    //                LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
+                    //                LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
+                    //                LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
+                    //                LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
+                    //            });
+                    //    }
                     //}
+
+                    await Task.Run(() =>
+                    {
+                        MainWindowDataGrid = ReadFileExcute(openFileDialog.FileName);
+                    });
+
                 }
                 catch (System.IO.IOException)
                 {
@@ -153,9 +122,38 @@ namespace Test_Quest_New_Technologies.ViewModel
             }
         }
 
-        private async void ReadFileExcute(string FileName)
+        private ObservableCollection<MainWindowDataGridModel> ReadFileExcute(string FileName)
         {
-
+            using (StreamReader sr = new StreamReader(FileName, Encoding.Default))
+            {
+                ObservableCollection<MainWindowDataGridModel> localOC = new ObservableCollection<MainWindowDataGridModel>();
+                string getLine;
+                while ((getLine = sr.ReadLine()) != null)
+                {
+                    string[] getSplitLine = getLine.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    DateTime tryToDate;
+                    if (getSplitLine.Length == 12 && DateTime.TryParse(getSplitLine[0], out tryToDate))
+                    {
+                        localOC.Add(
+                            new MainWindowDataGridModel()
+                            {
+                                Loc_Date = DateTime.Parse(getSplitLine[0]),
+                                Object_A = getSplitLine[1],
+                                Type_A = getSplitLine[2],
+                                Object_B = getSplitLine[3],
+                                Type_B = getSplitLine[4],
+                                Direction = getSplitLine[5],
+                                Color = getSplitLine[6],
+                                Intensity = getSplitLine[7],
+                                LatitudeA = Convert.ToDouble(getSplitLine[8].Replace('.', ',')),
+                                LongitudeA = Convert.ToDouble(getSplitLine[9].Replace('.', ',')),
+                                LatitudeB = Convert.ToDouble(getSplitLine[10].Replace('.', ',')),
+                                LongitudeB = Convert.ToDouble(getSplitLine[11].Replace('.', ','))
+                            });
+                    }
+                }
+                return localOC;
+            }
         }
 
     }
