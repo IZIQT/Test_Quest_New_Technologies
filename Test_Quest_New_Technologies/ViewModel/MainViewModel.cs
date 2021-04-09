@@ -14,6 +14,30 @@ namespace Test_Quest_New_Technologies.ViewModel
 {
     class MainViewModel:ViewModelBase
     {
+        private bool enableButtonTestExportCSV;
+        public bool EnableButtonTestExportCSV
+        {
+            get => enableButtonTestExportCSV;
+            set
+            {
+                if (enableButtonTestExportCSV == value) return;
+                enableButtonTestExportCSV = value;
+                OnPropertyChanged(nameof(EnableButtonTestExportCSV));
+            }
+        }
+
+        private bool enableButtonExportCSV;
+        public bool EnableButtonExportCSV
+        {
+            get => enableButtonExportCSV;
+            set
+            {
+                if (enableButtonExportCSV == value) return;
+                enableButtonExportCSV = value;
+                OnPropertyChanged(nameof(EnableButtonExportCSV));
+            }
+        }
+        
         private Visibility runExportCSVVisiblity;
         public Visibility RunExportCSVVisiblity
         {
@@ -80,6 +104,8 @@ namespace Test_Quest_New_Technologies.ViewModel
         public MainViewModel()
         {
             RunExportCSVVisiblity = Visibility.Collapsed;
+            EnableButtonExportCSV = true;
+            EnableButtonTestExportCSV = true;
             ExportCSVFile = new RelayCommand(ExportCSVFileExecute);
             ExitExportCSV = new RelayCommand(ExitExportCSVExecute);
             ExitExportCSVTestExit = new RelayCommand(ExitExportCSVTestExitExecute);
@@ -92,7 +118,9 @@ namespace Test_Quest_New_Technologies.ViewModel
             token = cts.Token;
             await Task.Run(() =>
             {
+                EnableButtonTestExportCSV = false;
                 MainWindowDataGrid = TestExitExcute(token);
+                EnableButtonTestExportCSV = true;
             });
             
         }
@@ -117,7 +145,9 @@ namespace Test_Quest_New_Technologies.ViewModel
                     token = cts.Token;
                     await Task.Run(() =>
                     {
+                        EnableButtonExportCSV = false;
                         MainWindowDataGrid = ReadFileExcute(openFileDialog.FileName, token);
+                        EnableButtonExportCSV = true;
                     });
 
                 }

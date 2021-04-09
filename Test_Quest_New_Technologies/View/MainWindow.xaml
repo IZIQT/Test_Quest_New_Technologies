@@ -29,10 +29,10 @@
 
         <materialDesign:ColorZone Grid.ColumnSpan="4" Grid.RowSpan="2" Mode="PrimaryMid" >
             <DockPanel>
-                <Button Margin="10 0 0 0" Command="{Binding ExportCSVFile}" ToolTip="Выгрузить из CVS файла">
+                <Button Margin="10 0 0 0" IsEnabled="{Binding EnableButtonExportCSV}" Command="{Binding ExportCSVFile}" ToolTip="Выгрузить из CVS файла">
                     <materialDesign:PackIcon  Kind="FileCsv"/>
                 </Button>
-                <Button Margin="10 0 0 0" Command="{Binding ExitExportCSVTestExit}" ToolTip="Тест прерывания асинхронной операции">
+                <Button Margin="10 0 0 0" IsEnabled="{Binding EnableButtonTestExportCSV}" Command="{Binding ExitExportCSVTestExit}" ToolTip="Тест прерывания асинхронной операции">
                     <materialDesign:PackIcon  Kind="FileDownloadOutline"/>
                 </Button>
                 <Button Command="{Binding ExitExportCSV}" Margin="10 0 0 0" Visibility="{Binding RunExportCSVVisiblity}">
